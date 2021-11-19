@@ -32,10 +32,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 Create a static.json file
 heroku login
-heroku create
+heroku create shoppingsiteclientvue3
+heroku git:remote -a shoppingsiteclientvue3
 heroku buildpacks:add heroku/nodejs
 heroku buildpacks:add https://github.com/heroku/heroku-buildpack-static
-heroku git:remote -a shoppingsiteclientvue3
 git add .
 git commit -am "make it better"
 git push heroku main
