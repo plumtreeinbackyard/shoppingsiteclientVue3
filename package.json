@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "12.x",
-    "npm": "6.x"
+    "node": "16.x",
+    "npm": "8.x"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
+    "build": "vue-cli-service build",    
     "lint": "vue-cli-service lint",
     "scss": "node-sass --watch .\\src\\assets\\scss -o .\\src\\assets\\css"
   },
@@ -33,7 +32,6 @@
     "@vue/cli-service": "~4.5.15",
     "@vue/compiler-sfc": "^3.1.0",
     "@vue/eslint-config-airbnb": "^5.0.2",
-    "@vue/test-utils": "^1.1.2",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
@@ -135,18 +133,6 @@
     "last 2 versions",
     "not dead"
   ],
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "vue"
-    ],
-    "transform": {
-      ".*\\.(vue)$": "vue-jest",
-      "^.+\\.js$": "babel-jest"
-    },
-    "mapCoverage": true,
-    "preset": "@vue/cli-plugin-unit-jest/presets/no-babel"
-  },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
