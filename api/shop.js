@@ -29,17 +29,6 @@ export default {
       cb();
     }, 100);
   },
-  // for simulate random checkout failure.
-  // buyProducts(products, cb, errorCb) {
-  //   setTimeout(() => {
-  //     simulate random checkout failure.
-  //     if (Math.random() > 0.5 || navigator.webdriver) {
-  //       cb();
-  //     } else {
-  //       errorCb();
-  //     }
-  //   }, 100);
-  // },
 
   // update inventory in database after successful checkout,
   // cartProducts contains two properties: id and quantity.

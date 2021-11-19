@@ -53,8 +53,8 @@
                     }"
                   >
                     <span class="cart-number" style="color: white;">{{ cartNumber }}</span>
-                  </div></router-link
-                >
+                  </div>
+                  </router-link>
               </li>
             </ul>
           </div>

@@ -27,3 +27,15 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Deploy to Heroku
+
+Create a static.json file
+heroku login
+heroku create
+heroku buildpacks:add heroku/nodejs
+heroku buildpacks:add https://github.com/heroku/heroku-buildpack-static
+heroku git:remote -a shoppingsiteclientvue3
+git add .
+git commit -am "make it better"
+git push heroku main
