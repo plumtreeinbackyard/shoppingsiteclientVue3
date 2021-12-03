@@ -7,6 +7,7 @@
             <br />
             <span style="color:#808080;font-size:60%;">Coded in Vue 3 and ASP.NET Core</span>
           </router-link>
+
           <div class="show-on-small-screen">
             <router-link to="/cart" class="nav-link">
               <div
@@ -19,6 +20,7 @@
               </div></router-link
             >
           </div>
+
           <button
             class="navbar-toggler"
             type="button"
@@ -30,6 +32,7 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
+
           <div
             class="collapse navbar-collapse"
             id="navbarTogglerDemo01"
@@ -40,7 +43,7 @@
               <li class="nav-item">
                 <router-link to="/" class="nav-link">Home</router-link>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" v-if="authState && authState.isAuthenticated && isAdmin">
                 <router-link to="/admin" class="nav-link">Admin</router-link>
               </li>
               <li class="nav-item">
@@ -56,6 +59,28 @@
                   </div>
                   </router-link>
               </li>
+              <li class="nav-item">
+                <router-link to="/myaccount"
+                  v-if="authState && authState.isAuthenticated"
+                  class="nav-link" style="color: #fff;">
+                  <img src="@/assets/img/baseline_person_outline_white_18dp.png" />
+                  {{claims.given_name}}
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <div
+                  v-if="!authState || !authState.isAuthenticated" v-on:click="login()"
+                  class="nav-link" style="cursor: pointer;">
+                  Login
+                </div>
+              </li>
+              <li class="nav-item">
+                <div
+                  v-if="authState && authState.isAuthenticated" v-on:click="logout()"
+                  class="nav-link" style="cursor: pointer;">
+                  Logout
+                </div>
+              </li>
             </ul>
           </div>
         </nav>
@@ -68,6 +93,8 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 
+const PATH_TO_PROTECTED_ROUTE = "/";
+
 export default {
   name: "Menu",
   setup() {
@@ -76,6 +103,31 @@ export default {
     return {
       cartNumber
     };
+  },
+  data: function() {
+    return {
+      isAdmin: false,
+      claims: {}
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      setTimeout(async() => {
+        if (this.authState && this.authState.isAuthenticated) {
+          this.claims = await this.$auth.getUser();
+          this.isAdmin = this.claims.groups.includes("admin");
+        }
+      }, 1000);
+    },
+    login() {
+      this.$auth.signInWithRedirect({ originalUri: PATH_TO_PROTECTED_ROUTE });
+    },
+    logout() {
+      this.$auth.signOut({ postLogoutRedirectUri: `${window.location.origin}` });
+    }
   }
 };
 </script>

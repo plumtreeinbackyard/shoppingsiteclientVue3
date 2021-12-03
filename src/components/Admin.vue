@@ -105,6 +105,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import auth from "../auth";
 
 const url = process.env.VUE_APP_API_URL;
 const GET_PRODUCTS_API_URL = `${url}/api/products`;
@@ -130,9 +131,14 @@ export default {
       }
     });
 
+    const addAuthHeader = {
+      headers: { Authorization: `Bearer ${auth.oktaAuth.getAccessToken()}` }
+    };
+    console.log("access token: ", auth.oktaAuth.getAccessToken());
+
     const addProduct = async() => {
       try {
-        const response = await axios.post(ADD_PRODUCT_API_URL, newItem.value);
+        const response = await axios.post(ADD_PRODUCT_API_URL, newItem.value, addAuthHeader);
         products.value.push(response.data);
         error = "";
         newItem.value = {

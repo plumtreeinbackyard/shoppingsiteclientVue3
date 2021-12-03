@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",    
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "scss": "node-sass --watch .\\src\\assets\\scss -o .\\src\\assets\\css"
   },
   "dependencies": {
+    "@okta/okta-auth-js": "^5.8.0",
+    "@okta/okta-vue": "^5.0.1",
     "@vue/compat": "^3.1.0",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
@@ -116,7 +118,7 @@
     ]
   },
   "prettier": {
-    "printWidth": 100,
+    "printWidth": 120,
     "trailingComma": "none",
     "semi": true,
     "singleQuote": false,
