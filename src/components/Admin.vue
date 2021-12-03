@@ -134,7 +134,6 @@ export default {
     const addAuthHeader = {
       headers: { Authorization: `Bearer ${auth.oktaAuth.getAccessToken()}` }
     };
-    console.log("access token: ", auth.oktaAuth.getAccessToken());
 
     const addProduct = async() => {
       try {
@@ -159,7 +158,10 @@ export default {
       const r = confirm("Are you sure that you need to delete this product?");
       if (r) {
         try {
-          await axios.delete(DELETE_PRODUCT_API_URL, { id });
+          await axios.delete(DELETE_PRODUCT_API_URL, {
+            data: { id },
+            headers: addAuthHeader.headers
+          });
           products.value.splice(index, 1);
         } catch (e) {
           error = "Something went wrong with deleting product!";

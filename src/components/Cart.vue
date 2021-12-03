@@ -64,7 +64,8 @@
       </div>
 
       <p class="mt-5 mb-5">
-        <button :disabled="!products.length || flag" type="submit" class="btn btn-dark">
+        <button v-if="products.length" :disabled="!products.length || flag" type="submit"
+        class="btn btn-dark">
           Checkout
         </button>
       </p>
@@ -88,19 +89,19 @@ export default {
     const products = computed(() => store.getters["cart/cartProducts"]);
     const total = computed(() => store.getters["cart/cartTotalPrice"]);
 
-    const checkFlag = (index, inventory, quantity) => {
-      // if item inventory is lower than required item quantity then flag 1 for item inventory state
+    const checkInventory = (index, inventory, quantity) => {
+      // if cart item's inventory is lower than required quantity
+      // then flag 1 for this item's inventory state
       inventoryFlag.value[index] = parseInt(inventory, 10) < quantity ? 1 : 0;
+      // check if there is any cart item has no inventory
       flag = inventoryFlag.value.reduce((sum, item) => sum + item, 0) > 0;
     };
+
     const changeQuantity = (index, inventory, id, quantity) => {
       store.dispatch("cart/changeQuantity", { id, quantity });
-      checkFlag(index, inventory, quantity);
+      checkInventory(index, inventory, quantity);
     };
-    const checkout = () => {
-      store.dispatch("cart/checkout", products.value)
-        .then(() => setTimeout(() => alert("Checkout successful."), 500)); // eslint-disable-line no-alert
-    };
+
     const removeItem = id => {
       store.dispatch("cart/removeItem", { id });
       // reload page to refresh products quantity
@@ -109,20 +110,32 @@ export default {
 
     products.value.forEach((product, index) => {
       quantities.value.push(product.quantity);
-      checkFlag(index, product.inventory, quantities.value[index]);
+      checkInventory(index, product.inventory, quantities.value[index]);
     });
 
     return {
       quantities,
       inventoryFlag,
       flag,
+      store,
       checkoutStatus,
       products,
       total,
       changeQuantity,
-      checkout,
       removeItem
     };
+  },
+  methods: {
+    async checkout() {
+      if (this.authState && this.authState.isAuthenticated) {
+        await this.store.dispatch("cart/checkout", this.products);
+        // eslint-disable-next-line
+        alert("Checkout successful.");
+      } else {
+        // eslint-disable-next-line
+        alert("Please log in to check out.");
+      }
+    }
   }
 };
 </script>

@@ -66,6 +66,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import auth from "../auth";
 
 const url = process.env.VUE_APP_API_URL;
 
@@ -88,9 +89,13 @@ export default {
       }
     });
 
+    const addAuthHeader = {
+      headers: { Authorization: `Bearer ${auth.oktaAuth.getAccessToken()}` }
+    };
+
     const editProduct = async() => {
       try {
-        await axios.put(EDIT_PRODUCT_API_URL, product.value);
+        await axios.put(EDIT_PRODUCT_API_URL, product.value, addAuthHeader);
         error.value = "";
         // eslint-disable-next-line
         alert("The product has been updated in database!");

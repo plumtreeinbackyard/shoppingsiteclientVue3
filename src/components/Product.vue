@@ -66,13 +66,15 @@ export default {
 
     const addProductToCart = () => store.dispatch("cart/addProductToCart", { id: id, quantity: quantity.value });
 
-    const addToCart = () => {
+    const addToCart = async() => {
       if (quantity.value) {
-        addProductToCart()
-          .then(() => setTimeout(() => alert("Added to cart."), 500)); // eslint-disable-line no-alert
+        await addProductToCart();
         quantity.value = 0;
+        // eslint-disable-next-line
+        alert("Added to cart.");
       } else {
-        alert("Quantity should be greater than 0."); // eslint-disable-line no-alert
+        // eslint-disable-next-line
+        alert("Quantity should be greater than 0.");
       }
     };
     return {
