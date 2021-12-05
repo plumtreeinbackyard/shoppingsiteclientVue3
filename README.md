@@ -31,6 +31,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ## Deploy to Heroku
 
 Create a static.json file
+
+```
 heroku login
 heroku create shoppingsiteclientvue3
 heroku git:remote -a shoppingsiteclientvue3
@@ -39,3 +41,4 @@ heroku buildpacks:add https://github.com/heroku/heroku-buildpack-static
 git add .
 git commit -am "make it better"
 git push heroku main
+```
