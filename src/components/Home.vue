@@ -1,5 +1,13 @@
 <template>
   <div class="main">
+    <div class="container">
+      <div class="mt-5" style="border: 1px solid #ff9900;">
+        <p class="mt-4">- Use "user1@gmail.com" as username and "okta1234" as password
+          to login as a customer.
+        <br />- Use "user2@gmail.com" as username and "okta1234" as password
+         to login as an admin.</p>
+      </div>
+    </div>
     <h1>Product list</h1>
     <div v-if="isProductsEmpty" class="alert alert-dismissible alert-warning">
       <button type="button" class="close" data-dismiss="alert">
