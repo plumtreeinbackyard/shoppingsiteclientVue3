@@ -99,7 +99,7 @@ export default {
         error.value = "";
         // eslint-disable-next-line
         alert("The product has been updated in database!");
-        window.location.href = `${url}/admin`;
+        window.location.href = `${window.location.origin}/admin`;
       } catch (e) {
         error.value = "Something went wrong with editing product!";
       }
