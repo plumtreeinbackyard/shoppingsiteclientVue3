@@ -1,4 +1,11 @@
-import shop from "../../api/shop";
+import axios from "axios";
+import auth from "@/auth";
+
+const url = process.env.VUE_APP_API_URL;
+const UPDATE_INVENTORY_API_URL = `${url}/api/products/updateinventory`;
+const addAuthHeader = {
+  headers: { Authorization: `Bearer ${auth.oktaAuth.getAccessToken()}` }
+};
 
 // initial state
 // shape: [{ id, quantity }]
@@ -36,35 +43,18 @@ const actions = {
     commit("setCheckoutStatus", null);
     // empty cart
     commit("setCartItems", { items: [] });
-    shop.buyProducts(
-      products,
-      () => {
-        commit("setCheckoutStatus", true);
-        // update product inventory in database
-        shop.updateInventoryInDB(products);
-      }
-    );
+
+    setTimeout(() => {
+      commit("setCheckoutStatus", true);
+      // update product inventory in database
+      axios
+        .put(UPDATE_INVENTORY_API_URL, products, addAuthHeader)
+        .catch(error => {
+          // eslint-disable-next-line
+          console.log(error);
+        });
+    }, 100);
   },
-  // for simulate random checkout failure.
-  // checkout({ commit, state }, products) {
-  //   const savedCartItems = [...state.items];
-  //   commit("setCheckoutStatus", null);
-  //   // empty cart
-  //   commit("setCartItems", { items: [] });
-  //   shop.buyProducts(
-  //     products,
-  //     () => {
-  //       commit("setCheckoutStatus", "successful");
-  //       // update product inventory in database
-  //       shop.updateInventoryInDB(products);
-  //     },
-  //     () => {
-  //       commit("setCheckoutStatus", "failed");
-  //       // rollback to the cart saved before sending the request
-  //       commit("setCartItems", { items: savedCartItems });
-  //     }
-  //   );
-  // },
 
   addProductToCart({ state, commit }, { id, quantity }) {
     commit("setCheckoutStatus", null);
@@ -74,8 +64,6 @@ const actions = {
     } else {
       commit("incrementItemQuantity", { id, quantity });
     }
-    // remove item quantity from stock
-    // commit("products/decrementProductInventory", { id, quantity }, { root: true });
   },
 
   changeQuantity({ commit }, { id, quantity }) {

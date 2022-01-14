@@ -1,4 +1,7 @@
-import shop from "../../api/shop";
+import axios from "axios";
+
+const url = process.env.VUE_APP_API_URL;
+const GET_PRODUCTS_API_URL = `${url}/api/products`;
 
 // initial state
 const state = () => ({
@@ -13,9 +16,15 @@ const getters = {
 // actions
 const actions = {
   getAllProducts({ commit }) {
-    shop.getProducts(products => {
-      commit("setProducts", products);
-    });
+    axios
+      .get(GET_PRODUCTS_API_URL)
+      .then(response => {
+        commit("setProducts", response.data);
+      })
+      .catch(error => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
   }
 };
 
@@ -24,12 +33,6 @@ const mutations = {
   setProducts(state, products) {
     state.all = products;
   }
-  // ,
-
-  // decrementProductInventory(state, { id, quantity }) {
-  //   const product = state.all.find(product => product.id === id);
-  //   product.inventory = parseInt(product.inventory, 10) - parseInt(quantity, 10);
-  // }
 };
 
 export default {
