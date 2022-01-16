@@ -3,9 +3,6 @@ import auth from "@/auth";
 
 const url = process.env.VUE_APP_API_URL;
 const UPDATE_INVENTORY_API_URL = `${url}/api/products/updateinventory`;
-const addAuthHeader = {
-  headers: { Authorization: `Bearer ${auth.oktaAuth.getAccessToken()}` }
-};
 
 // initial state
 // shape: [{ id, quantity }]
@@ -46,9 +43,12 @@ const actions = {
 
     setTimeout(() => {
       commit("setCheckoutStatus", true);
+      const addAuthHeader = {
+        headers: { Authorization: `Bearer ${auth.oktaAuth.getAccessToken()}` }
+      };
       // update product inventory in database
       axios
-        .put(UPDATE_INVENTORY_API_URL, products, addAuthHeader)
+        .post(UPDATE_INVENTORY_API_URL, products, addAuthHeader)
         .catch(error => {
           // eslint-disable-next-line
           console.log(error);

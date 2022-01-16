@@ -20,6 +20,7 @@
 <script>
 export default {
   name: "Myaccount",
+  // eslint-disable-next-line
   data: function() {
     return {
       claims: {}
